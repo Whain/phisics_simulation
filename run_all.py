@@ -19,7 +19,7 @@ import numpy as np
 
 from case_sim import CaseModel, HAVE_NUMBA, FACES
 from experiment import (PHYS_COUNTS, P_MODEL, run_series, print_table, markdown_table, freqs_of,
-                        counts_of, chi2_test, wilson_ci, plot_convergence, plot_comparison,
+                        counts_of, chi2_test, wilson_ci, binom_test_greater, plot_convergence, plot_comparison,
                         mass_sweep, plot_mass_sweep)
 
 
@@ -91,6 +91,12 @@ def main():
         line = f"реальные данные vs {name}: χ² = {chi2:.2f}, p-value = {pv:.3f} → гипотеза {verdict} (α = 0.05)"
         print(line)
         chi_lines.append(f"- {line}")
+    # направленная гипотеза из раздела 2: грань 1 выпадает чаще, чем в модели
+    p_one = binom_test_greater(PHYS_COUNTS[1], n_phys, P_MODEL[1])
+    line = (f"грань 1, альтернатива p₁ > {P_MODEL[1]:.3f}: точный односторонний биномиальный критерий, "
+            f"P(X ≥ {PHYS_COUNTS[1]}) = {p_one:.3f} → " + ("значимо" if p_one < 0.05 else "не значимо") + " при α = 0.05")
+    print(line)
+    chi_lines.append(f"- {line}")
     ci_lines = []
     for f in FACES:
         lo, hi = wilson_ci(PHYS_COUNTS[f], n_phys)
@@ -120,7 +126,8 @@ def main():
         "|---:|---:|---:|---:|---:|",
         *[f"| {f} | {P_MODEL[f]:.3f} | {PHYS_COUNTS[f] / n_phys:.2f} | {pf[f]:.4f} | {pr[f]:.4f} |" for f in FACES],
         "", f"Доверительные интервалы для реального эксперимента (N = {n_phys}, метод Уилсона):", "",
-        *ci_lines, "", "Критерий согласия χ² Пирсона (2 степени свободы):", "", *chi_lines, "",
+        *ci_lines, "", "Критерий согласия χ² Пирсона (2 степени свободы) и направленный критерий для грани 1:", "",
+        *chi_lines, "",
     ])
     with open(out("summary.md"), "w", encoding="utf-8") as fh:
         fh.write(summary)

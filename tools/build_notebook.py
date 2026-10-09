@@ -115,7 +115,10 @@ for f in (1, 2, 3):
 for name, p in [("модель p_i", P_MODEL), ("симуляция, первое касание", freqs_of(big["first"])),
                 ("симуляция, грань остановки", freqs_of(big["rest"]))]:
     chi2, pv = chi2_test(PHYS_COUNTS, p)
-    print(f"реальные данные vs {name}: χ² = {chi2:.2f}, p-value = {pv:.3f}")"""),
+    print(f"реальные данные vs {name}: χ² = {chi2:.2f}, p-value = {pv:.3f}")
+# направленная гипотеза «грань 1 выпадает чаще» (заявлена до эксперимента)
+p_one = binom_test_greater(PHYS_COUNTS[1], n_phys, P_MODEL[1])
+print(f"грань 1, альтернатива p₁ > {P_MODEL[1]:.3f}: P(X ≥ {PHYS_COUNTS[1]}) = {p_one:.3f}")"""),
     md("""## 6. Как влияет «тяжёлая» грань
 
 Перебираем дополнительную массу на грани 1. В полёте сила тяжести приложена к центру масс и не создаёт

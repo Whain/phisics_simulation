@@ -3,6 +3,8 @@
 Компьютерный эксперимент (ЛР №1, разделы 4–5): серии бросков, частоты,
 накопленные частоты, сравнение с моделью и с реальным экспериментом.
 """
+from math import comb
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -65,6 +67,14 @@ def chi2_test(counts, probs):
     n = sum(counts.values())
     chi2 = sum((counts[f] - n * probs[f]) ** 2 / (n * probs[f]) for f in FACES)
     return chi2, float(np.exp(-chi2 / 2))
+
+
+def binom_test_greater(k, n, p):
+    """
+    Точный односторонний биномиальный критерий: H0 — вероятность равна p,
+    альтернатива — больше p. p-value = P(X ≥ k), X ~ Bin(n, p).
+    """
+    return float(sum(comb(n, j) * p ** j * (1 - p) ** (n - j) for j in range(k, n + 1)))
 
 
 def cumulative_freq(outcomes):
@@ -134,7 +144,7 @@ def plot_convergence(outcomes, title, p_model=P_MODEL, phys_counts=PHYS_COUNTS, 
                 bbox=dict(boxstyle="round,pad=0.2", fc=SURFACE, ec="none"))
     for f in FACES:
         ax.axhline(p_model[f], color=INK_2, lw=1.2, ls="--", zorder=1)
-    ax.plot([], [], color=INK_2, ls="--", label="p_i исходной модели")
+    ax.plot([], [], color=INK_2, ls="--", label="pᵢ исходной модели")
     ax.plot([], [], color=INK_2, ls=":", lw=1.5, label=f"реальный эксперимент (N = {n_phys}), цвет — грань")
     ax.set_xscale("log")
     ax.set_xlim(1, len(n) * 4)
