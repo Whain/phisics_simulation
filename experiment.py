@@ -130,7 +130,8 @@ def plot_convergence(outcomes, title, p_model=P_MODEL, phys_counts=PHYS_COUNTS, 
     for y, _ in ys[1:]:
         pos.append(max(y, pos[-1] + 0.045))
     for (y, f), yp in zip(ys, pos):
-        ax.text(len(n) * 1.12, yp, f"p̂{f} = {y:.3f}", color=INK, va="center", fontsize=10)
+        ax.text(len(n) * 1.12, yp, f"p̂{f} = {y:.3f}", color=INK, va="center", fontsize=10,
+                bbox=dict(boxstyle="round,pad=0.2", fc=SURFACE, ec="none"))
     for f in FACES:
         ax.axhline(p_model[f], color=INK_2, lw=1.2, ls="--", zorder=1)
     ax.plot([], [], color=INK_2, ls="--", label="p_i исходной модели")
