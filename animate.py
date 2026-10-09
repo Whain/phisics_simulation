@@ -460,7 +460,7 @@ def animate_throw(model: CaseModel, traj=None, seed=11, fps=30, speed=0.4, slow=
     axz.set_ylim(-0.02, X[:, 2].max() * 1.15)
     axz.set_xlabel("время, с")
     axz.set_ylabel("высота, м")
-    axz.set_title("Высота над полом", loc="left", fontsize=12, fontweight="bold")
+    axz.set_title("Высота над полом", loc="left", fontsize=12, fontweight="bold", color=th["ink"])
     axz.legend(frameon=False, fontsize=9, loc="center right", labelcolor=th["ink"])
     dot_z, = axz.plot([], [], "o", color=th["ink"], ms=7, mec=th["panel"], mew=1.5)
 
@@ -474,7 +474,7 @@ def animate_throw(model: CaseModel, traj=None, seed=11, fps=30, speed=0.4, slow=
     axd.set_ylim(-1.05, 1.5)
     axd.set_xlabel("время, с")
     axd.set_ylabel("cos(нормаль, вниз)")
-    axd.set_title("Какая грань смотрит вниз (1 — точно вниз)", loc="left", fontsize=12, fontweight="bold")
+    axd.set_title("Какая грань смотрит вниз (1 — точно вниз)", loc="left", fontsize=12, fontweight="bold", color=th["ink"])
     axd.legend(frameon=False, fontsize=9, ncol=3, loc="upper center", labelcolor=th["ink"])
     cur_d = axd.axvline(0, color=th["ink"], lw=1)
 
@@ -553,7 +553,7 @@ def animate_series(model: CaseModel, n_throws=10, seed=3, fps=24, speed=0.7, phy
     axb.set_ylim(0, 1.15)
     axb.set_yticks(np.linspace(0, 1, 6))
     axb.set_ylabel("относительная частота p̂ᵢ = nᵢ / n")
-    axb.set_title("Частоты по фактически выпавшим граням", loc="left", fontsize=12, fontweight="bold")
+    axb.set_title("Частоты по фактически выпавшим граням", loc="left", fontsize=12, fontweight="bold", color=th["ink"])
     axb.legend(frameon=False, loc="upper right", fontsize=9, labelcolor=th["ink"])
     bar_txt = [axb.text(f, 0.01, "", ha="center", va="bottom", fontsize=11, color=th["ink"]) for f in FACES]
     plus_one = axb.text(1, 0.5, "", ha="center", va="bottom", fontsize=22, fontweight="bold", color="#ffe14d",
